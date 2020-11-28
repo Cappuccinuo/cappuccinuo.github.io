@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Cappuccinuo&#39;s blog</title>
+  <icon>http://cappuccinuo.github.io/icon.png</icon>
+  
+  <link href="http://cappuccinuo.github.io/atom.xml" rel="self"/>
+  
+  <link href="http://cappuccinuo.github.io/"/>
+  <updated>2020-11-28T01:56:42.236Z</updated>
+  <id>http://cappuccinuo.github.io/</id>
+  
+  <author>
+    <name>Yuan</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>hi-serena</title>
+    <link href="http://cappuccinuo.github.io/2020/11/28/hi-serena/"/>
+    <id>http://cappuccinuo.github.io/2020/11/28/hi-serena/</id>
+    <published>2020-11-28T01:56:42.000Z</published>
+    <updated>2020-11-28T01:56:42.236Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+</feed>
