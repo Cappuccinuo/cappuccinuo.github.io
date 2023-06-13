@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Yuan&#39;s blog</title>
+  <icon>https://www.gaoyuan.me/icon.png</icon>
+  
+  <link href="https://www.gaoyuan.me/atom.xml" rel="self"/>
+  
+  <link href="https://www.gaoyuan.me/"/>
+  <updated>2020-11-29T11:58:49.282Z</updated>
+  <id>https://www.gaoyuan.me/</id>
+  
+  <author>
+    <name>Yuan Gao</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Executor in Java</title>
+    <link href="https://www.gaoyuan.me/2020/11/29/executor-in-java/"/>
+    <id>https://www.gaoyuan.me/2020/11/29/executor-in-java/</id>
+    <published>2020-11-29T10:01:27.000Z</published>
+    <updated>2020-11-29T11:58:49.282Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Context manager in Python</title>
+    <link href="https://www.gaoyuan.me/2020/11/28/context-manager-in-python/"/>
+    <id>https://www.gaoyuan.me/2020/11/28/context-manager-in-python/</id>
+    <published>2020-11-28T03:02:30.000Z</published>
+    <updated>2020-11-29T04:20:08.609Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;The usage of resources in any programming language is very common, for example, open a file and dump the data to json&lt;br&gt;object, or</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>

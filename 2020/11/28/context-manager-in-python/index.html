@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="The usage of resources in any programming language is very common, for example, open a file and dump the data to jsonobject, or connect to a database and run a query. These resources are limited in su">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Context manager in Python">
+<meta property="og:url" content="https://www.gaoyuan.me/2020/11/28/context-manager-in-python/index.html">
+<meta property="og:site_name" content="Yuan&#39;s blog">
+<meta property="og:description" content="The usage of resources in any programming language is very common, for example, open a file and dump the data to jsonobject, or connect to a database and run a query. These resources are limited in su">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-11-28T03:02:30.000Z">
+<meta property="article:modified_time" content="2020-11-29T04:20:08.609Z">
+<meta property="article:author" content="Yuan Gao">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Context manager in Python</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Yuan's blog" type="application/atom+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2020/11/29/executor-in-java/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&text=Context manager in Python"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&title=Context manager in Python"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&is_video=false&description=Context manager in Python"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Context manager in Python&body=Check out this article: https://www.gaoyuan.me/2020/11/28/context-manager-in-python/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&title=Context manager in Python"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&title=Context manager in Python"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&title=Context manager in Python"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&title=Context manager in Python"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&name=Context manager in Python&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&t=Context manager in Python"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Implementing-a-Context-Manager-as-a-class"><span class="toc-number">1.</span> <span class="toc-text">Implementing a Context Manager as a class</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Handling-Exceptions"><span class="toc-number">2.</span> <span class="toc-text">Handling Exceptions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Implementing-a-Context-Manager-as-a-Generator"><span class="toc-number">3.</span> <span class="toc-text">Implementing a Context Manager as a Generator</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Iterables-Generator-Yield"><span class="toc-number">3.1.</span> <span class="toc-text">Iterables, Generator, Yield</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#References"><span class="toc-number">4.</span> <span class="toc-text">References</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Context manager in Python
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Yuan Gao</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-11-28T03:02:30.000Z" class="dt-published" itemprop="datePublished">2020-11-28</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>The usage of resources in any programming language is very common, for example, open a file and dump the data to json<br>object, or connect to a database and run a query. These resources are limited in supply, sometimes if we forget to<br>release the resources,</p>
+<p>Using the following example to show that if we don’t close the file, the content cannot be written to the file</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">file_io_without_close_the_file</span>(<span class="params">test_file_name</span>):</span></span><br><span class="line">    clean_up_file(test_file_name)</span><br><span class="line">    f1 = <span class="built_in">open</span>(test_file_name, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">    f1.write(<span class="string">&#x27;Hello World&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;Writing &quot;Hello World&quot; to the file &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(test_file_name))</span><br><span class="line">    f2 = <span class="built_in">open</span>(test_file_name, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    print(<span class="string">&#x27;After reading &#123;&#125;, the file content is &quot;&#123;&#125;&quot;&#x27;</span>.<span class="built_in">format</span>(test_file_name, f2.read()))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">file_io_with_close_the_file</span>(<span class="params">test_file_name</span>):</span></span><br><span class="line">    clean_up_file(test_file_name)</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(test_file_name, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f1:</span><br><span class="line">        f1.write(<span class="string">&#x27;Hello World&#x27;</span>)</span><br><span class="line">        print(<span class="string">&#x27;Writing &quot;Hello World&quot; to the file &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(test_file_name))</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(test_file_name, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f2:</span><br><span class="line">        print(<span class="string">&#x27;After reading &#123;&#125;, the file content is &quot;&#123;&#125;&quot;&#x27;</span>.<span class="built_in">format</span>(test_file_name, f2.read()))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">clean_up_file</span>(<span class="params">file_name</span>):</span></span><br><span class="line">    <span class="keyword">if</span> os.path.exists(file_name):</span><br><span class="line">        print(<span class="string">&quot;Removing &#123;&#125;&quot;</span>.<span class="built_in">format</span>(file_name))</span><br><span class="line">        os.remove(file_name)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">&quot;The file &#123;&#125; does not exist&quot;</span>.<span class="built_in">format</span>(file_name))</span><br><span class="line"></span><br><span class="line">file_io_without_close_the_file(<span class="string">&#x27;test1.txt&#x27;</span>)</span><br><span class="line">file_io_with_close_the_file(<span class="string">&#x27;text2.txt&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>The output is </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Removing test1.txt</span><br><span class="line">Writing &quot;Hello World&quot; to the file test1.txt</span><br><span class="line">After reading test1.txt, the file content is &quot;&quot;</span><br><span class="line">Removing text2.txt</span><br><span class="line">Writing &quot;Hello World&quot; to the file text2.txt</span><br><span class="line">After reading text2.txt, the file content is &quot;Hello World&quot;</span><br></pre></td></tr></table></figure>
+
+<p>Context manager allow you to allocate and release the resources precisely, the <code>with</code> statement in the example does<br>exactly what the context manager should do. The most widely example of context manager is the <code>with</code> statement.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;file_name&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> opened_file:</span><br><span class="line">    opened_file.write(<span class="string">&quot;Hello World&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>is equal to </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">file = <span class="built_in">open</span>(<span class="string">&#x27;file_name&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    file.write(<span class="string">&quot;Hello World&quot;</span>)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    file.close()</span><br></pre></td></tr></table></figure>
+
+<p>The second example can be simplified by the <code>with</code> statement, and we don’t need to care about closing the file in the<br>first example.</p>
+<h2 id="Implementing-a-Context-Manager-as-a-class"><a href="#Implementing-a-Context-Manager-as-a-class" class="headerlink" title="Implementing a Context Manager as a class"></a>Implementing a Context Manager as a class</h2><p>At least a context manager should have an <code>__enter__</code> and <code>__exit</code> method defined</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">File</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, file_name, method</span>):</span></span><br><span class="line">        self.file_obj = <span class="built_in">open</span>(file_name, method)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__enter__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.file_obj</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__exit__</span>(<span class="params">self, <span class="built_in">type</span>, value, traceback</span>):</span></span><br><span class="line">        self.file_obj.close()</span><br></pre></td></tr></table></figure>
+
+<p>Then we can use the new class <code>File</code> with the <code>with</code> statement</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> File(<span class="string">&#x27;file_name&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(<span class="string">&quot;Hello World&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>The process is like</p>
+<ul>
+<li>The with statement stores the <code>__exit__</code> method of the File class.</li>
+<li>It calls the <code>__enter__</code> method of the File class.</li>
+<li>The <code>__enter__</code> method opens the file and returns it.</li>
+<li>The opened file handle is passed to opened_file.</li>
+<li>We write to the file using .write().</li>
+<li>The with statement calls the stored <code>__exit__</code> method.</li>
+<li>The <code>__exit__</code> method closes the file.</li>
+</ul>
+<h2 id="Handling-Exceptions"><a href="#Handling-Exceptions" class="headerlink" title="Handling Exceptions"></a>Handling Exceptions</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> File(<span class="string">&#x27;test.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.undefined_function()</span><br><span class="line"></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;/Users/cappuccinuo/Documents/GitHub/Hello-Python/ContextManager/file.py&quot;</span>, line <span class="number">13</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    f.undefined_function()</span><br><span class="line">AttributeError: <span class="string">&#x27;_io.TextIOWrapper&#x27;</span> <span class="built_in">object</span> has no attribute <span class="string">&#x27;undefined_function&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>The <code>__exit__</code> function takes three parameters, <code>exc_type</code>, <code>exc_val</code>, <code>exc_tb</code>, which means exit type, val and<br>traceback. If we implement the <code>__exit__</code> method like below</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__exit__</span>(<span class="params">self, exc_type, exc_val, exc_tb</span>):</span></span><br><span class="line">    print(<span class="string">&quot;Exception has been handled&quot;</span>)</span><br><span class="line">    print(exc_type)</span><br><span class="line">    print(exc_val)</span><br><span class="line">    print(exc_tb)</span><br><span class="line">    self.file_obj.close()</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>The output is like</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Exception has been handled</span><br><span class="line">&lt;class &#39;AttributeError&#39;&gt;</span><br><span class="line">&#39;_io.TextIOWrapper&#39; object has no attribute &#39;undefined_function&#39;</span><br><span class="line">&lt;traceback object at 0x106d07148&gt;</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Implementing-a-Context-Manager-as-a-Generator"><a href="#Implementing-a-Context-Manager-as-a-Generator" class="headerlink" title="Implementing a Context Manager as a Generator"></a>Implementing a Context Manager as a Generator</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> contextlib <span class="keyword">import</span> contextmanager</span><br><span class="line"></span><br><span class="line"><span class="meta">@contextmanager</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">open_file</span>(<span class="params">name, operation</span>):</span></span><br><span class="line">    f = <span class="built_in">open</span>(name, operation)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">yield</span> f</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        f.close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open_file(<span class="string">&#x27;test.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(<span class="string">&quot;Hello World!&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>The method involve the concept about generators, yield and decorators.</p>
+<p>The process is like</p>
+<ul>
+<li>Python encounters the yield keyword. Due to this it creates a generator instead of a normal function.</li>
+<li>Due to the decoration, contextmanager is called with the function name (open_file) as its argument.</li>
+<li>The contextmanager decorator returns the generator wrapped by the GeneratorContextManager object.</li>
+<li>The GeneratorContextManager is assigned to the open_file function. Therefore, when we later call the open_file<br>function, we are actually calling the GeneratorContextManager object.</li>
+</ul>
+<h3 id="Iterables-Generator-Yield"><a href="#Iterables-Generator-Yield" class="headerlink" title="Iterables, Generator, Yield"></a>Iterables, Generator, Yield</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Iterables</span></span><br><span class="line">print(<span class="string">&#x27;Iterables&#x27;</span>)</span><br><span class="line">mylist = [x * x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>)]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> mylist:</span><br><span class="line">    print(i)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> mylist:</span><br><span class="line">    print(i)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generators</span></span><br><span class="line">print(<span class="string">&#x27;Generators&#x27;</span>)</span><br><span class="line">mygenerator = (x * x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> mygenerator:</span><br><span class="line">    print(i)</span><br><span class="line"><span class="comment"># Cannot read twice</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> mygenerator:</span><br><span class="line">    print(i)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Yield</span></span><br><span class="line">print(<span class="string">&#x27;Yield&#x27;</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">createGenerator</span>():</span></span><br><span class="line">    mylist = <span class="built_in">range</span>(<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> mylist:</span><br><span class="line">        <span class="keyword">yield</span> i * i</span><br><span class="line"></span><br><span class="line">myyield = createGenerator()</span><br><span class="line">print(myyield)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> myyield:</span><br><span class="line">    print(i)</span><br><span class="line"><span class="comment"># Cannot read twice</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> myyield:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+
+<p>The output is</p>
+<pre><code class="output">Iterables
+0
+1
+4
+0
+1
+4
+Generators
+0
+1
+4
+Yield
+&lt;generator object createGenerator at 0x102ff55e8&gt;
+0
+1
+4</code></pre>
+<p>Simply speaking, a generator is a function that returns an object(iterator) which we can iterate over(one value at a<br>time). The hard part of understanding <code>yield</code> is <code>when we create the function, the code we write does not run, the  function only returns a generator object</code>. </p>
+<p>The difference between <code>return</code> and <code>yield</code> is that, a <code>return</code> statement terminates a function entirely, while <code>yield</code><br>statement pauses the function saving all its states and later continues from there on successive calls.</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p><a target="_blank" rel="noopener" href="https://book.pythontips.com/en/latest/context_managers.html">https://book.pythontips.com/en/latest/context_managers.html</a><br><a target="_blank" rel="noopener" href="https://wiki.python.org/moin/Generators">https://wiki.python.org/moin/Generators</a><br><a target="_blank" rel="noopener" href="https://www.programiz.com/python-programming/generator">https://www.programiz.com/python-programming/generator</a><br><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/context-manager-in-python/">https://www.geeksforgeeks.org/context-manager-in-python/</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Implementing-a-Context-Manager-as-a-class"><span class="toc-number">1.</span> <span class="toc-text">Implementing a Context Manager as a class</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Handling-Exceptions"><span class="toc-number">2.</span> <span class="toc-text">Handling Exceptions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Implementing-a-Context-Manager-as-a-Generator"><span class="toc-number">3.</span> <span class="toc-text">Implementing a Context Manager as a Generator</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Iterables-Generator-Yield"><span class="toc-number">3.1.</span> <span class="toc-text">Iterables, Generator, Yield</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#References"><span class="toc-number">4.</span> <span class="toc-text">References</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&text=Context manager in Python"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&title=Context manager in Python"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&is_video=false&description=Context manager in Python"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Context manager in Python&body=Check out this article: https://www.gaoyuan.me/2020/11/28/context-manager-in-python/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&title=Context manager in Python"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&title=Context manager in Python"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&title=Context manager in Python"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&title=Context manager in Python"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&name=Context manager in Python&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.gaoyuan.me/2020/11/28/context-manager-in-python/&t=Context manager in Python"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020-2023
+    Yuan Gao
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
