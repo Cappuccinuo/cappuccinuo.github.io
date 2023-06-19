@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="周六周日去上海参加了Rust China Conf 2023，以下是我听到的印象比较深的话题。因为对Rust实际应用较少，之后PPT上传之后还要对其中的一些议题进行进一步的研究。 Borsh - 安全高效的二进制序列化Borsh是NEAR开发的多语言的二进制序列化框架。它的特点是不保存任何类型信息，只在假设类型正确的情况下保存必要的数据信息，使得序列化后的二进制数据相比用Json来序列化体积小且更">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust China Conf 2023 参会随记">
+<meta property="og:url" content="https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Yuan&#39;s blog">
+<meta property="og:description" content="周六周日去上海参加了Rust China Conf 2023，以下是我听到的印象比较深的话题。因为对Rust实际应用较少，之后PPT上传之后还要对其中的一些议题进行进一步的研究。 Borsh - 安全高效的二进制序列化Borsh是NEAR开发的多语言的二进制序列化框架。它的特点是不保存任何类型信息，只在假设类型正确的情况下保存必要的数据信息，使得序列化后的二进制数据相比用Json来序列化体积小且更">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-06-19T08:13:41.000Z">
+<meta property="article:modified_time" content="2023-06-19T11:09:41.060Z">
+<meta property="article:author" content="Yuan Gao">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Rust China Conf 2023 参会随记</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="Yuan's blog" type="application/atom+xml">
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2023/06/13/%E6%B5%85%E8%B0%88%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95Paxos/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&text=Rust China Conf 2023 参会随记"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&title=Rust China Conf 2023 参会随记"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&is_video=false&description=Rust China Conf 2023 参会随记"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Rust China Conf 2023 参会随记&body=Check out this article: https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&title=Rust China Conf 2023 参会随记"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&title=Rust China Conf 2023 参会随记"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&title=Rust China Conf 2023 参会随记"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&title=Rust China Conf 2023 参会随记"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&name=Rust China Conf 2023 参会随记&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&t=Rust China Conf 2023 参会随记"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Borsh-%E5%AE%89%E5%85%A8%E9%AB%98%E6%95%88%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">Borsh - 安全高效的二进制序列化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Rust%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD%E5%AE%9E%E8%B7%B5"><span class="toc-number">2.</span> <span class="toc-text">Rust原子操作的高性能实践</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CeresDB%E7%9A%84Rust%E7%94%9F%E4%BA%A7%E5%AE%9E%E8%B7%B5"><span class="toc-number">3.</span> <span class="toc-text">CeresDB的Rust生产实践</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8egg%E5%AD%B5%E5%8C%96%E4%BD%A0%E7%9A%84SQL%E4%BC%98%E5%8C%96%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">用egg孵化你的SQL优化器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache-Ballista"><span class="toc-number">5.</span> <span class="toc-text">Apache Ballista</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Workshop%EF%BC%9A%E8%BE%BE%E5%9D%A6-Rust-in-System"><span class="toc-number">6.</span> <span class="toc-text">Workshop：达坦 - Rust in System</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%94%A8Rust%E5%86%99%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F"><span class="toc-number">6.0.1.</span> <span class="toc-text">如何用Rust写分布式系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#30%E5%88%86%E9%92%9F%E4%BD%93%E9%AA%8CRust-for-Linux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E5%BC%80%E5%8F%91"><span class="toc-number">6.0.2.</span> <span class="toc-text">30分钟体验Rust for Linux内核模块开发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Building-microsecond-scale-system-with-modern-networking-in-Rust"><span class="toc-number">6.0.3.</span> <span class="toc-text">Building microsecond-scale system with modern networking in Rust</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E8%B0%88-Rust-%E4%B8%8E%E5%9B%BD%E5%AF%86-TLS"><span class="toc-number">7.</span> <span class="toc-text">简谈 Rust 与国密 TLS</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Rust China Conf 2023 参会随记
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">Yuan Gao</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2023-06-19T08:13:41.000Z" class="dt-published" itemprop="datePublished">2023-06-19</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>周六周日去上海参加了<a target="_blank" rel="noopener" href="https://rustcc.cn/2023rustchinaconf/schedule.html">Rust China Conf 2023</a>，以下是我听到的印象比较深的话题。因为对Rust实际应用较少，之后PPT上传之后还要对其中的一些议题进行进一步的研究。</p>
+<h1 id="Borsh-安全高效的二进制序列化"><a href="#Borsh-安全高效的二进制序列化" class="headerlink" title="Borsh - 安全高效的二进制序列化"></a>Borsh - 安全高效的二进制序列化</h1><p>Borsh是NEAR开发的多语言的二进制序列化框架。它的特点是不保存任何类型信息，只在假设类型正确的情况下保存必要的数据信息，使得序列化后的二进制数据相比用Json来序列化体积小且更高效。通过与Rust常见序列化框架bincode，cbor，speedy比较，Borsh在输入大小增加情况下，有更好的序列化和反序列化表现，<a target="_blank" rel="noopener" href="https://github.com/near/borsh#benchmarks">相关Benchmark</a>在官方Github库有一个部分专门介绍。</p>
+<p>演讲结束有两个问题，一个是关于Borsh和<a target="_blank" rel="noopener" href="https://protobuf.dev/">ProtoBuf</a>这样传统序列化框架的区别，另外一个是省略类型信息是否降低了安全性。演讲者提出ProtoBuf更多会用在RPC(Remote Procedure Call)场景，并且ProtoBuf会有校验过程。Borsh在设计之初是假定序列化后的二进制数据是独占访问，不可能被篡改，同时Borsh是应用在区块链场景，有安全性的保证。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/near/borsh">项目Github链接</a>，截至目前Borsh支持9种语言的二进制序列化。</p>
+<h1 id="Rust原子操作的高性能实践"><a href="#Rust原子操作的高性能实践" class="headerlink" title="Rust原子操作的高性能实践"></a>Rust原子操作的高性能实践</h1><p>这场演讲并没有介绍太多的前沿知识，更多的是介绍一些计算机基础知识，如</p>
+<ul>
+<li>原子性：有两种方式Compare and swap和Fetch and modify</li>
+<li>什么是指令重排</li>
+<li>如何获取高性能？无锁编程，减少上下文切换，同时为了减少contention，要引入Exponential Backoff Retry</li>
+<li>C++/Rust的内存顺序：Sequential Consistency，Acquire，Release，AcqRel，Relaxed，Consume，Rust中是前四种，<a target="_blank" rel="noopener" href="https://doc.rust-lang.org/nomicon/atomics.html">这篇官方文档</a>有详细介绍<ul>
+<li>对于AcqRel：<ul>
+<li>A write-release guarantees that all preceding code completes before the releasing write</li>
+<li>A read-acquire guarantees that all following code starts after the acquiring read</li>
+<li>意思是说对于一个acquire访问，所有在它之后的操作，始终保持在它之后，不会提前执行，但对于acquire之前的操作可能会被重排到acquire之后。同理对于release访问，所有在它之前的操作，始终保持在它之前，但对于release之后的操作可能会被重排到release之前</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="CeresDB的Rust生产实践"><a href="#CeresDB的Rust生产实践" class="headerlink" title="CeresDB的Rust生产实践"></a>CeresDB的Rust生产实践</h1><p><a target="_blank" rel="noopener" href="https://github.com/CeresDB/ceresdb"></a></p>
+<p>CeresDB是一个分布式，支持云原生的时序数据库，可以用来存储和管理时间序列数据。目标是解决时间线高基数问题，并提供原生分布式方案，适用于物联网IoT、运维监控、金融分析等行业场景。</p>
+<p>TBD</p>
+<h1 id="用egg孵化你的SQL优化器"><a href="#用egg孵化你的SQL优化器" class="headerlink" title="用egg孵化你的SQL优化器"></a>用egg孵化你的SQL优化器</h1><p>TBD</p>
+<h1 id="Apache-Ballista"><a href="#Apache-Ballista" class="headerlink" title="Apache Ballista"></a>Apache Ballista</h1><p><a target="_blank" rel="noopener" href="https://arrow.apache.org/ballista/">Apache Ballista</a>是一个Rust实现的基于Apache Arrow和DataFusion实现的分布式的SQL查询引擎，<a target="_blank" rel="noopener" href="https://github.com/apache/arrow-ballista">项目Github链接</a>。</p>
+<p>与Apache Spark 类似，它实现了一个分布式执行模型，支持基于DAG的任务调度和容错。它还支持不同工作节点之间的数据交换。关键的区别是，混洗数据是以Arrow格式存在的，可以通过使用Flight协议进行高效交换，实现零拷贝。Ballista支持许多云对象存储，如 HDFS、S3、Azure。与Snowflake类似，为了加速查询性能，Ballista也支持在本地磁盘上的数据缓存和缓存感知的任务调度。</p>
+<p>TBD</p>
+<h1 id="Workshop：达坦-Rust-in-System"><a href="#Workshop：达坦-Rust-in-System" class="headerlink" title="Workshop：达坦 - Rust in System"></a>Workshop：达坦 - Rust in System</h1><h3 id="如何用Rust写分布式系统"><a href="#如何用Rust写分布式系统" class="headerlink" title="如何用Rust写分布式系统"></a>如何用Rust写分布式系统</h3><p><a target="_blank" rel="noopener" href="https://github.com/datenlord/Xline">Xline</a>是一个分布式的KV存储</p>
+<p>TBD，架构，CURP</p>
+<h3 id="30分钟体验Rust-for-Linux内核模块开发"><a href="#30分钟体验Rust-for-Linux内核模块开发" class="headerlink" title="30分钟体验Rust for Linux内核模块开发"></a>30分钟体验Rust for Linux内核模块开发</h3><p><a target="_blank" rel="noopener" href="https://github.com/datenlord/r4l_playground">Rust for Linux Playground链接</a></p>
+<h3 id="Building-microsecond-scale-system-with-modern-networking-in-Rust"><a href="#Building-microsecond-scale-system-with-modern-networking-in-Rust" class="headerlink" title="Building microsecond-scale system with modern networking in Rust"></a>Building microsecond-scale system with modern networking in Rust</h3><p>TBD</p>
+<h1 id="简谈-Rust-与国密-TLS"><a href="#简谈-Rust-与国密-TLS" class="headerlink" title="简谈 Rust 与国密 TLS"></a>简谈 Rust 与国密 TLS</h1><p>TBD</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Borsh-%E5%AE%89%E5%85%A8%E9%AB%98%E6%95%88%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">Borsh - 安全高效的二进制序列化</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Rust%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E7%9A%84%E9%AB%98%E6%80%A7%E8%83%BD%E5%AE%9E%E8%B7%B5"><span class="toc-number">2.</span> <span class="toc-text">Rust原子操作的高性能实践</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CeresDB%E7%9A%84Rust%E7%94%9F%E4%BA%A7%E5%AE%9E%E8%B7%B5"><span class="toc-number">3.</span> <span class="toc-text">CeresDB的Rust生产实践</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8egg%E5%AD%B5%E5%8C%96%E4%BD%A0%E7%9A%84SQL%E4%BC%98%E5%8C%96%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">用egg孵化你的SQL优化器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Apache-Ballista"><span class="toc-number">5.</span> <span class="toc-text">Apache Ballista</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Workshop%EF%BC%9A%E8%BE%BE%E5%9D%A6-Rust-in-System"><span class="toc-number">6.</span> <span class="toc-text">Workshop：达坦 - Rust in System</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%94%A8Rust%E5%86%99%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F"><span class="toc-number">6.0.1.</span> <span class="toc-text">如何用Rust写分布式系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#30%E5%88%86%E9%92%9F%E4%BD%93%E9%AA%8CRust-for-Linux%E5%86%85%E6%A0%B8%E6%A8%A1%E5%9D%97%E5%BC%80%E5%8F%91"><span class="toc-number">6.0.2.</span> <span class="toc-text">30分钟体验Rust for Linux内核模块开发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Building-microsecond-scale-system-with-modern-networking-in-Rust"><span class="toc-number">6.0.3.</span> <span class="toc-text">Building microsecond-scale system with modern networking in Rust</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E8%B0%88-Rust-%E4%B8%8E%E5%9B%BD%E5%AF%86-TLS"><span class="toc-number">7.</span> <span class="toc-text">简谈 Rust 与国密 TLS</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&text=Rust China Conf 2023 参会随记"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&title=Rust China Conf 2023 参会随记"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&is_video=false&description=Rust China Conf 2023 参会随记"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Rust China Conf 2023 参会随记&body=Check out this article: https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&title=Rust China Conf 2023 参会随记"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&title=Rust China Conf 2023 参会随记"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&title=Rust China Conf 2023 参会随记"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&title=Rust China Conf 2023 参会随记"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&name=Rust China Conf 2023 参会随记&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://www.gaoyuan.me/2023/06/19/Rust-China-Conf-2023-%E5%8F%82%E4%BC%9A%E9%9A%8F%E8%AE%B0/&t=Rust China Conf 2023 参会随记"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020-2023
+    Yuan Gao
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
