@@ -6,7 +6,7 @@
   <link href="https://www.gaoyuan.me/atom.xml" rel="self"/>
   
   <link href="https://www.gaoyuan.me/"/>
-  <updated>2023-07-03T02:04:03.168Z</updated>
+  <updated>2023-08-01T06:29:15.913Z</updated>
   <id>https://www.gaoyuan.me/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Top K Frequent Words</title>
+    <link href="https://www.gaoyuan.me/2023/08/01/Top-K-Frequent-Words/"/>
+    <id>https://www.gaoyuan.me/2023/08/01/Top-K-Frequent-Words/</id>
+    <published>2023-08-01T02:33:25.000Z</published>
+    <updated>2023-08-01T06:29:15.913Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;最近面试腾讯云岗位时面试官出了这道算法题，本身这道题并不难（原题：&lt;a href=&quot;https://leetcode.com/problems/top-k-frequent-words/&quot;&gt;LeetCode 692&lt;/a&gt;），最核心的考察还是在它的Follow</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>分布式系统经典论文</title>
